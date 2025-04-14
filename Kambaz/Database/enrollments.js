@@ -9,6 +9,6 @@ export default [
   { "_id": "12", "user": "000", "course": "CS4500" },
   { "_id": "12", "user": "000", "course": "CS4501" },
   { "_id": "13", "user": "001", "course": "CS1234" },
-  { "_id": "13", "user": "001", "course": "PHIL1300" },
-  { "_id": "14", "user": "001", "course": "CS4500" }
+  { "_id": "14", "user": "001", "course": "PHIL1300" },
+  { "_id": "15", "user": "001", "course": "CS4500" }
 ]
