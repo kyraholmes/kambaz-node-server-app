@@ -61,19 +61,25 @@ export default function UserRoutes(app) {
   };
   app.post("/api/users/current/courses", createCourse);
 
-  const findCoursesForEnrolledUser = (req, res) => {
-    let { userId } = req.params; // gets the user ID from the params of the api call
-    if (userId === "current") {
-      const currentUser = req.session["currentUser"]; //gets the current user from the session
-      if (!currentUser) { // if there is no current user, send an error
-        res.sendStatus(401);
-        return
-      }
-      userId = currentUser._id;
+  const findCoursesForUser = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
     }
-    const courses = courseDao.findCoursesForEnrolledUser(userId);
+    if (currentUser.role === "ADMIN") {
+      const courses = await courseDao.findAllCourses();
+      res.json(courses);
+      return;
+    }
+    let { uid } = req.params;
+    if (uid === "current") {
+      uid = currentUser._id;
+    }
+    const courses = await enrollmentsDao.findCoursesForUser(uid);
     res.json(courses);
   };
+  app.get("/api/users/:uid/courses", findCoursesForUser);
 
   const findUnCoursesForEnrolledUser = (req, res) => {
     let { userId } = req.params; // gets the user ID from the params of the api call
@@ -90,7 +96,7 @@ export default function UserRoutes(app) {
     res.json(courses);
   };
   app.get("/api/users/:userId/uncourses", findUnCoursesForEnrolledUser); // how to call the request
-  app.get("/api/users/:userId/courses", findCoursesForEnrolledUser); // how to call the request
+  
 
   const updateUser = async (req, res) => {
     const userId = req.params.userId;
