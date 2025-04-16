@@ -3,8 +3,15 @@ import * as courseDao from "../Courses/dao.js"; // allows calls to find things r
 import * as enrollmentsDao from "../Enrollments/dao.js"; // allows calls to find things related to enrollments
 
 export default function UserRoutes(app) {
-  const createUser = (req, res) => { };
-  const deleteUser = (req, res) => { };
+  const createUser = async (req, res) => {
+    const user = await dao.createUser(req.body);
+    res.json(user);
+  };
+
+  const deleteUser = async (req, res) => { 
+    const status = await dao.deleteUser(req.params.userId);
+    res.json(status);
+  };
 
 
   const findUserById = async (req, res) => { 
@@ -85,12 +92,14 @@ export default function UserRoutes(app) {
   app.get("/api/users/:userId/uncourses", findUnCoursesForEnrolledUser); // how to call the request
   app.get("/api/users/:userId/courses", findCoursesForEnrolledUser); // how to call the request
 
-  const updateUser = (req, res) => {
+  const updateUser = async (req, res) => {
     const userId = req.params.userId;
     const userUpdates = req.body;
-    dao.updateUser(userId, userUpdates);
-    const currentUser = dao.findUserById(userId);
-    req.session["currentUser"] = currentUser;
+    await dao.updateUser(userId, userUpdates);
+    const currentUser = req.session["currentUser"];
+    if (currentUser && currentUser._id === userId) {
+      req.session["currentUser"] = { ...currentUser, ...userUpdates };
+    }
     res.json(currentUser);
   };
 
