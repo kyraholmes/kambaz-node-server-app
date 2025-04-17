@@ -62,6 +62,7 @@ export default function UserRoutes(app) {
   app.post("/api/users/current/courses", createCourse);
 
   const findCoursesForUser = async (req, res) => {
+    console.log('reached');
     const currentUser = req.session["currentUser"];
     if (!currentUser) {
       res.sendStatus(401);
@@ -76,7 +77,8 @@ export default function UserRoutes(app) {
     if (uid === "current") {
       uid = currentUser._id;
     }
-    const courses = await enrollmentsDao.findCoursesForUser(uid);
+    const courses = (await enrollmentsDao.findCoursesForUser(uid));
+    
     res.json(courses);
   };
   app.get("/api/users/:uid/courses", findCoursesForUser);
