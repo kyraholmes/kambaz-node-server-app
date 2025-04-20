@@ -62,7 +62,6 @@ export default function UserRoutes(app) {
   app.post("/api/users/current/courses", createCourse);
 
   const findCoursesForUser = async (req, res) => {
-    console.log('reached');
     const currentUser = req.session["currentUser"];
     if (!currentUser) {
       res.sendStatus(401);
