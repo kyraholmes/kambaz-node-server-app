@@ -13,13 +13,13 @@ export function getQuizById(quizId) {
 
 // creates a new quiz with a new id
 export function addQuiz(quiz) {
-  const newQuiz = { ...quiz, _id: uuidv4() };
+  const newQuiz = { ...quiz, _id: uuidv4(), questions: [] };
   return model.create(newQuiz);
 }
 
 // deletes a quiz based on id
 export function deleteQuiz(quizId) {
-  return model.delete({_id: quizId});
+  return model.deleteOne({_id: quizId});
 }
 
 //updates a quiz based on id

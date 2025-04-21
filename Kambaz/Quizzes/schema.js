@@ -4,7 +4,6 @@ const schema = new mongoose.Schema(
   {
     _id: String,
     course: String,
-    questions: { type: String, ref: "QuestionModel"},
     status: Boolean,
     title: String,
     description: String,
@@ -17,6 +16,7 @@ const schema = new mongoose.Schema(
     showAnswers: Boolean,
     accessCode: String,
     oneQuestionAtATime: Boolean,
+    webCam: Boolean,
     lockQuestions: Boolean,
     dueDate: String,
     availDate: String,
